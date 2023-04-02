@@ -26,7 +26,7 @@ func main() {
 		log.Println("Starting scraper")
 	}
 
-	stuff := []*colly.HTMLElement{}
+	episodes := []*colly.HTMLElement{}
 
 	c := colly.NewCollector(
 		colly.UserAgent("Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0"),
@@ -43,11 +43,11 @@ func main() {
 	})
 
 	c.OnHTML("ul.sc-c-list__items li article a", func(e *colly.HTMLElement) {
-		stuff = append(stuff, e)
+		episodes = append(episodes, e)
 	})
 
 	c.OnXML("//ul", func(e *colly.XMLElement) {
-		if len(stuff) > 0 {
+		if len(episodes) > 0 {
 			foundSomething = true
 		}
 	})
@@ -57,7 +57,7 @@ func main() {
 			log.Println("Finished", r.Request.URL)
 		}
 		if foundSomething {
-			fmt.Println(URLBase + stuff[0].Attr("href"))
+			fmt.Println(URLBase + episodes[0].Attr("href"))
 		}
 	})
 
